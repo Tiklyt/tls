@@ -3,6 +3,8 @@
 #include <string.h>
 #include <netdb.h>
 #include <stdlib.h>
+#include<unistd.h>
+
 
 #define MAX_GET_SIZE 255
 #define MAX_BUF_SIZE 255
@@ -47,13 +49,15 @@ int http_get(int fd_conn,const char * host, const char * path) {
 
 void display_result(int fd_conn) {
     int received = 0;
-    static char recv_buff[MAX_BUF_SIZE + 1];
-    while ((received = recv(fd_conn,recv_buff,MAX_BUF_SIZE,0)) > 0) {
+    static char recv_buff[MAX_BUF_SIZE + 1] = {0};
+    while ((received = recv(fd_conn, recv_buff, MAX_BUF_SIZE, 0)) > 0) {
         recv_buff[received] = '\0';
         printf("%s",recv_buff);
     }
+
     printf("\n");
 }
+
 int main() {
     char uri[] = "http://httpforever.com/";
     char * host,* path;
