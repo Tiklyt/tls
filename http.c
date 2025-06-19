@@ -22,9 +22,10 @@ int parse_url( char *uri, char **host, char **path )
 
 
 int main() {
-    char uri[] = "http://www.company.com/index.html";
+    char uri[] = "http://www.company.com/jjjjjjjindex.html";
     char * host,* path;
-    printf("size : %d",sizeof(char));
+    printf("size : %d \n",sizeof(char));
     parse_url(uri,&host,&path);
+    printf("%s \n",path);
     return 0;
 }
