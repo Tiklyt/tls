@@ -62,17 +62,24 @@ int main() {
     char uri[] = "http://httpforever.com/";
     char * host,* path;
     parse_url(uri,&host,&path);
+
+    char * proxy_host, *proxy_user, *proxy_pass;
+    int proxy_port,int ind;
     struct hostent * server_info = gethostbyname(host);
     struct sockaddr_in host_address;
     host_address.sin_family = AF_INET;
     host_address.sin_port = htons(HTTP_PORT);
+
     memcpy(&host_address.sin_addr,server_info->h_addr_list[0],sizeof(struct in_addr)) ;
     if (server_info == NULL) return -1;
+
     int conn_fd = socket(PF_INET,SOCK_STREAM,0);
     connect(conn_fd,( struct sockaddr*) &host_address,sizeof(host_address));
     if (!conn_fd) return EXIT_FAILURE;
+
     http_get(conn_fd,host,path);
     display_result(conn_fd);
     printf("HTML printing closed");
+
     return 0;
 }
