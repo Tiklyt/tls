@@ -64,7 +64,7 @@ int main() {
     parse_url(uri,&host,&path);
 
     char * proxy_host, *proxy_user, *proxy_pass;
-    int proxy_port,int ind;
+    int proxy_port, ind;
     struct hostent * server_info = gethostbyname(host);
     struct sockaddr_in host_address;
     host_address.sin_family = AF_INET;
