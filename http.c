@@ -20,15 +20,14 @@
  * @param host the host buffer
  * @param path the path buffer
  */
-int parse_url( char *uri, char **host, char **path )
-{
-  char * pos_it = strstr(uri,"//");
+int parse_url(char *uri, char **host, char **path) {
+  char *pos_it = strstr(uri, "//");
   if (pos_it == NULL) return -1;
   *host = pos_it + (sizeof(char) * 2);
-  pos_it = strchr(*host,'/');
+  pos_it = strchr(*host, '/');
   if (pos_it == NULL) {
     *path = NULL;
-  }else {
+  } else {
     *pos_it = '\0';
     *path = pos_it + sizeof(char);
   }
