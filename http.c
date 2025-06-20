@@ -42,8 +42,6 @@ int parse_proxy_param( char *proxy_spec,
             char **proxy_password )
 {
   char *login_sep, *colon_sep, *trailer_sep;
-  // Technically, the user should start the proxy spec with
-  // "http://". But, be forgiving if he didn't.
   if ( !strncmp( "http://", proxy_spec, 7 ) )
   {
    proxy_spec += 7;
@@ -55,7 +53,6 @@ int parse_proxy_param( char *proxy_spec,
     colon_sep = strchr( proxy_spec, ':' );
     if ( !colon_sep || ( colon_sep > login_sep ) )
     {
-      // Error - if username supplied, password must be supplied.
       fprintf( stderr, "Expected password in '%s'\n", proxy_spec );
       return 0;
     }
@@ -65,8 +62,6 @@ int parse_proxy_param( char *proxy_spec,
     *proxy_password = colon_sep + 1;
     proxy_spec = login_sep + 1;
   }
-  // If the user added a "/" on the end (as they sometimes do),
-  // just ignore it.
   trailer_sep = strchr( proxy_spec, '/' );
   if ( trailer_sep )
   {
@@ -76,14 +71,11 @@ int parse_proxy_param( char *proxy_spec,
   colon_sep = strchr( proxy_spec, ':' );
   if ( colon_sep )
   {
-    // non-standard proxy port
     *colon_sep = '\0';
     *proxy_host = proxy_spec;
     *proxy_port = atoi( colon_sep + 1 );
     if ( *proxy_port == 0 )
     {
-     // 0 is not a valid port; this is an error, whether
-     // it was mistyped or specified as 0.
      return 0;
     }
   }
@@ -154,7 +146,6 @@ int http_get( int connection, const char *path, const char *host,
   return 0;
 }
 
-#define BUFFER_SIZE 255
 
 /**
  * Receive all data available on a connection and dump it to stdout
@@ -162,9 +153,9 @@ int http_get( int connection, const char *path, const char *host,
 void display_result( int connection )
 {
   int received = 0;
-  static char recv_buf[ BUFFER_SIZE + 1 ];
+  static char recv_buf[ MAX_BUF_SIZE + 1 ];
 
-  while ( ( received = recv( connection, recv_buf, BUFFER_SIZE, 0 ) ) > 0 )
+  while ( ( received = recv( connection, recv_buf, MAX_BUF_SIZE, 0 ) ) > 0 )
   {
     recv_buf[ received ] = '\0';
     printf( "%s", recv_buf );
