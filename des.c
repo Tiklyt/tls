@@ -12,6 +12,17 @@ static void xor(unsigned char * target, const unsigned char * src, int len){
 
 }
 
+static void permute(unsigned char target [],
+                    const unsigned char * src,
+                    const int permute_table[],
+                    int len) {
+
+    for (int i = 0; i < len * 8; i++) {
+        if (GET_BIT(src, (permute_table[i] - 1))) SET_BIT(target, i);
+        else CLR_BIT(target, i);
+    }
+}
+
 
 int main() {
     char str[] = "32321312312321231";
